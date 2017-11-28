@@ -1,0 +1,181 @@
+FORMAT: 0.01 BETA
+HOST: http://api.chargeback.com/
+
+# Chargeback API
+
+The Chargeback API is a collection of RESTful JSON calls. The API uses standardized HTTP verbs and resource routes. Whenever possible, all JSON results will use a standardized format.
+
+Depending on the access controls granted to the key authorizing the request, some actions may be unavailable.
+
+# Chargeback API Root [/]
+
+This resource does not have any attributes. Instead it offers the initial API affordances in the form of the links in the JSON body.
+
+It is recommend to follow the “url” link values, [Link](https://tools.ietf.org/html/rfc5988) or Location headers where applicable to retrieve resources. Instead of constructing your own URLs, to keep your client decoupled from implementation details.
+
+## Retrieve the Entry Point [GET]
+
++ Response 200 (application/json)
+
+    {
+        "orders_url": "/orders",
+        "shipments_url": "/shipments",
+        "transactions_url": "/transactions",
+        "disputes_url": "/disputes",
+        "alerts_url": "/alerts",
+        "mids_url": "/mids"
+    }
+
+## Group Order
+
+Resources related to orders in the API.
+
+## Order [/orders.json]
+
+A Order object represents a single sales order in the ecommerce platform, POS system, or sales platform for the merchant. It has the following attributes:
+
++ crm_id - Chargeback's unique identifier for a data source that acts as sales platform
++ merchant_id - Chargeback's unique identifier for the merchant
++ order_id - The remote system's unique identifier for the order
++ order_ts - The remote system's "order completed" timestamp in ISO 8601 UTC format
++ order_amount - The final, total amount of the order. It should be the sum of line_item subtotals, shipping_subtotal, and tax_subtotal
++ transaction_id - The transaction id from the payment gateway for the credit card transaction
++ transaction_amount - The amount charged in the payment gateway for the credit card transaction.
++ card_type - The card network of the card used in the transaction. If not passed, Chargeback will ascertain based on the card number
++ card_prefix - The first six digits of the card number. Alternatively, use the card_number field.
++ card_suffix - The last four digits of the card number. Alternatively, use the card_number field.
++ card_number - If you use this field, you must pass the PAN in a masked format. Chargeback will extract the prefix and suffix.
++ card_exp - The expiration date captured at time of sale
++ reported_avs_status - If captured, the AVS status of the transaction
++ reported_cvv_status - If captured, the CVV status of the transaction
++ currency_code - Defaults to USD, please use ISO 4217
++ ip_address - The IP used by the cardholder to place the order in the merchant's sales platform
++ authorization_code - If captured, the authorization code returned by the payment gateway
++ arn - The ARN, if known
++ shipping_subtotal - The total amount charged for shipping.
++ tax_subtotal - The total amount charged for tax
++ source_url - The url to access this order in the merchant's sales platform.
++ tracking_numbers - Comma-separated list of tracking numbers; each will generate new shipment objects. See shipment actions.
++ customer_email - email from the customer profile
++ customer_first_name - first name from the customer profile
++ customer_last_name - last name from the customer profile
++ customer_phone - phone number from the customer profile
++ billing_first_name - the billing first name used in this particular order
++ billing_last_name - the billing last name used in this particular order
++ billing_address1 - the billing address used in this particular order
++ billing_address2 - the billing address line 2 used in this particular order
++ billing_city - the billing city used in this particular order
++ billing_state - the billing state used in this particular order
++ billing_country - the billing country used in this particular order
++ billing_postal - the billing postal code used in this particular order
++ shipments - an array of shipper items
++ line_items - an array of line items
++ id - CB system field for unique identifier for this order (maybe used for updates)
++ avs_status - CB system field for normalized version of the reported_avs_status, if recognized
++ cvv_status - CB system field for normalized version of the reported_cvv_status, if recognized
++ created_at - CB system field for the time in UTC when the order record was originally added to the database
++ updated_at - CB system field for the last time in UTC when the order record was modified
++ creator_id - CB system field for the id of the creator of the record. For API calls, it will be the user record that authorized the call
++ creator_type - CB system field for the type of creator of the record. For API calls, it will be the string 'User'
++ manually_generated - CB system field for identifying records created manually in the web UI
++ line_item
+    + product_name - The name of the product sold, as it stood at the time of the order.
+    + product_description - The description of the product, as it stood at the time of the order.
+    + product_amount - The price of the product at the time of the order.
+    + quantity - The number of this line item sold.
+    + subtotal - Should be equal to quantity * subtotal. Can be computed from these if left blank.
+    + source_product_id - The unique identifier of the product in the source system's backend database
+
+### Create a New Order [POST]
+
+You may report a completed Order using this action. It takes a JSON object.
+
++ Request (application/json)
+
+    {
+        'crm_id : 444,
+        'merchant_id' : 12345,
+        'order_id' : 'abc123',
+        'order_ts' : '2017-11-27T23:59:26Z'
+        'order_amount' : '177.16',
+        'transaction_id' : 'qwertyzzz',
+        'transaction_amount' : '55.00',
+        'card_prefix' : '444321',
+        'card_suffix' : '8215',
+        'card_exp' : '05/21',
+        'reported_avs_status' : 'Y',
+        'reported_cvv_status' : 'M',
+        'ip_address' : '172.98.44.123',
+        'authorization_code' : 'xxyyzz',
+        'shipping_subtotal' : '5.00',
+        'tax_subtotal' : '5.00',
+        'source_url' : 'https://my-magento-site.com/admin-area/order-search.php?order_id=abc123',
+        'tracking_numbers' : '1ZY2F2150255600110',
+        'line_items' : [
+            {
+                'product_name' : 'MIRRORLESS MICRO FOUR THIRDS 45-150 MM',
+                'product_description' : 'PANASONIC LUMIX G VARIO LENS, 45-150MM, F4.0-5.6 ASPH., MIRRORLESS MICRO FOUR THIRDS, MEGA OPTICAL I.S., H-FS45150AK (USA BLACK)',
+                'product_amount' : '147.99',
+                'quantity' : 1,
+                'subtotal' : '147.99',
+                'source_product_id' : 'prod-123'
+            },
+            {
+                'product_name' : 'Lens Cap',
+                'product_description' : 'Lens cap with lanyard fits most panasonic lumix cameras',
+                'product_amount' : '5.99',
+                'quantity' : 2,
+                'subtotal' : '11.98',
+                'source_product_id' : 'prod-777'
+            }
+        ],
+        'shipping_subtotal' : '5.99',
+        'tax_subtotal' : '11.20',
+        'billing_first_name' : 'Nate',
+        'billing_last_name' : 'Smith',
+        'billing_address1' : '12345 My Actual House',
+        'billing_city' : 'South Jordan',
+        'billing_state' : 'UT',
+        'billing_country' : 'USA',
+        'billing_postal' : '84009',
+    }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /orders/12345678
+
+    + Body
+        {
+            'id' : '12345678',
+            'avs_status' : 'Y',
+            'cvv_status' : 'M',
+            'created_at' : '2017-11-28T00:01:42Z',
+            'updated_at' : '2017-11-28T00:01:42Z',
+            'creator_id' : '55555',
+            'creator_type' : 'User',
+            'manually_generated' : false,
+            'shipments' : [
+                {
+                    'tracking_number' : '1ZY2F2150255600110',
+                    'tracking_summary': null,
+                    'shipper_name' : 'UPS',
+                    'shipped_ts' : null,
+                    'origin_name' : 'Cameras R Us',
+                    'origin_address1' : '555 A Texas Road',
+                    'origin_city' : 'Austin',
+                    'origin_state' : 'TX',
+                    'origin_country' : 'USA',
+                    'origin_zip' : '73301',
+                    'destination_first_name' : 'Nate'
+                    'destination_last_name' : 'Smith',
+                    'destination_address1' : '10235 S. Jordan Gateway',
+                    'destination_address2' : 'Suite 500',
+                    'destination_city' : 'South Jordan',
+                    'destination_state' : 'UT',
+                    'destination_country' : 'USA',
+                    'destination_zip' : '84095',
+                }
+            ]
+        }
