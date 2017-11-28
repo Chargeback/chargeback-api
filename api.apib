@@ -7,6 +7,22 @@ The Chargeback API is a collection of RESTful JSON calls. The API uses standardi
 
 Depending on the access controls granted to the key authorizing the request, some actions may be unavailable.
 
+## Standardized HTTP verbs and routes
+
+Assuming the "orders" resource, the following routes are available:
+
+| Verb | Action | Route             | Purpose                                                                             |
+|------|--------|-------------------|-------------------------------------------------------------------------------------|
+| GET  | search | /orders.json      | Search existing orders (see Orders section for search keys and return values)       |
+|      | show   | /orders/(id).json | Retrieve information about a single order                                           |
+| POST | create | /orders.json      | Create a new order.                                                                 |
+| PUT  | update | /orders/(id).json | Update an existing order with new information                                       |
+| POST | submit | /orders.json      | For convenience, a shortcut method to update or create based on unique identifiers. |
+
+For all "search" operations, no more than 100 records will be returned at a time. The "page" parameter controls which page is returned. If more data exists, the search results will include the link for the subsequent page.
+
+Show, create, update, and submit should return a JSON object that represents the resource. Search will return an array of such JSON objects.
+
 ## Authentication
 
 The Chargeback API uses HTTP Basic Authentication. Your credentials to use the web application can have API access enabled, and the same resources will be available.
@@ -19,92 +35,73 @@ Create and search Orders.
 
 A Order object represents a single sales order in the ecommerce platform, POS system, or sales platform for the merchant. It has the following attributes:
 
-+ crm_id - Chargeback's unique identifier for a data source that acts as sales platform
-+ merchant_id - Chargeback's unique identifier for the merchant
-+ order_id - The remote system's unique identifier for the order
-+ order_ts - The remote system's "order completed" timestamp in ISO 8601 UTC format
-+ order_amount - The final, total amount of the order. It should be the sum of line_item subtotals, shipping_subtotal, and tax_subtotal
-+ transaction_id - The transaction id from the payment gateway for the credit card transaction
-+ transaction_amount - The amount charged in the payment gateway for the credit card transaction.
-+ card_type - The card network of the card used in the transaction. If not passed, Chargeback will ascertain based on the card number
-+ card_prefix - The first six digits of the card number. Alternatively, use the card_number field.
-+ card_suffix - The last four digits of the card number. Alternatively, use the card_number field.
-+ card_number - If you use this field, you must pass the PAN in a masked format. Chargeback will extract the prefix and suffix.
-+ card_exp - The expiration date captured at time of sale
-+ reported_avs_status - If captured, the AVS status of the transaction
-+ reported_cvv_status - If captured, the CVV status of the transaction
-+ currency_code - Defaults to USD, please use ISO 4217
-+ ip_address - The IP used by the cardholder to place the order in the merchant's sales platform
-+ authorization_code - If captured, the authorization code returned by the payment gateway
-+ arn - The ARN, if known
-+ shipping_subtotal - The total amount charged for shipping.
-+ tax_subtotal - The total amount charged for tax
-+ source_url - The url to access this order in the merchant's sales platform.
-+ tracking_numbers - Comma-separated list of tracking numbers; each will generate new shipment objects. See shipment actions.
-+ customer_email - email from the customer profile
-+ customer_first_name - first name from the customer profile
-+ customer_last_name - last name from the customer profile
-+ customer_phone - phone number from the customer profile
-+ billing_first_name - the billing first name used in this particular order
-+ billing_last_name - the billing last name used in this particular order
-+ billing_address1 - the billing address used in this particular order
-+ billing_address2 - the billing address line 2 used in this particular order
-+ billing_city - the billing city used in this particular order
-+ billing_state - the billing state used in this particular order
-+ billing_country - the billing country used in this particular order
-+ billing_postal - the billing postal code used in this particular order
-+ id - CB system field for unique identifier for this order (maybe used for updates)
-+ avs_status - CB system field for normalized version of the reported_avs_status, if recognized
-+ cvv_status - CB system field for normalized version of the reported_cvv_status, if recognized
-+ created_at - CB system field for the time in UTC when the order record was originally added to the database
-+ updated_at - CB system field for the last time in UTC when the order record was modified
-+ creator_id - CB system field for the id of the creator of the record. For API calls, it will be the user record that authorized the call
-+ creator_type - CB system field for the type of creator of the record. For API calls, it will be the string 'User'
-+ manually_generated - CB system field for identifying records created manually in the web UI
-+ line_items - an array of line items
-    + product_name - The name of the product sold, as it stood at the time of the order.
-    + product_description - The description of the product, as it stood at the time of the order.
-    + product_amount - The price of the product at the time of the order.
-    + quantity - The number of this line item sold.
-    + subtotal - Should be equal to quantity * subtotal. Can be computed from these if left blank.
-    + source_product_id - The unique identifier of the product in the source system's backend database
-+ shipments - an array of shipping tracking information. In most cases, the array will be auto-populated by shipper integrations if tracking_numbers are passed. If you know the shipper is unsupported by Chargeback's platform, you may pass additional keys to provide correct shipment information.
-    + id - The Chargeback internal unique identifier for this shipment
-    + tracking_number - The tracking number provided by the shipping partner to identify the shipment.
-    + shipped_ts - The date the shipment was sent.
-    + tracking_summary - A description from the shipping partner about the shipment.
-    + source_url - When available, the URL of the shipment at the shipping partner website
-    + origin_name - Identifying information about the sender
-    + origin_address1 - Identifying information about the sender
-    + origin_address2 - Identifying information about the sender
-    + origin_city - Identifying information about the sender
-    + origin_state - Identifying information about the sender
-    + origin_country - Identifying information about the sender
-    + origin_zip - Identifying information about the sender
-    + destination_name - Identifying information about the recipient
-    + destination_address1 - Identifying information about the recipient
-    + destination_address2 - Identifying information about the recipient
-    + destination_city - Identifying information about the recipient
-    + destination_state - Identifying information about the recipient
-    + destination_country - Identifying information about the recipient
-    + destination_zip - Identifying information about the recipient
-    + status - Additional field available from some shipping partners
-    + status_code - Additional field available from some shipping partners
-    + status_description - Additional field available from some shipping partners
-    + scheduled_delivery_date - Additional field available from some shipping partners
-    + actual_delivery_date - Additional field available from some shipping partners
-    + attempted_delivery_date - Additional field available from some shipping partners
-    + weight - Additional field available from some shipping partners
-    + left_at - Additional field available from some shipping partners
-    + service - Additional field available from some shipping partners
-    + dimensions - Additional field available from some shipping partners
-    + packaging - Additional field available from some shipping partners
-    + packaging_count - Additional field available from some shipping partners
-    + purchase_order_number - Additional field available from some shipping partners
-    + invoice_number - Additional field available from some shipping partners
-    + reference - Additional field available from some shipping partners
-    + shipper_id - CB identifier for the shipping partner.
-    + shipper_name
+| Key                        | Type               | Importance  | Purpose                                                                                                                                  |
+|----------------------------|--------------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| order_id                   | string             | REQUIRED    | The merchant system's unique identifier for the order                                                                                    |
+| order_ts                   | ISO 8601           | REQUIRED    | The merchant system's "order completed" timestamp                                                                                        |
+| order_amount               | decimal            | REQUIRED    | The final total amount of the order                                                                                                      |
+| transaction_id             | string             | REQUIRED    | The transaction id in the payment gateway for the credit card transaction                                                                |
+| transaction_amount         | decimal            | REQUIRED    | The amount charged in the payment gateway for the credit card transaction.                                                               |
+| crm_id, crm_name           | integer / string   | REQUIRED    | Chargeback's identifier for the data source, or the name of the data source (agreed upon beforehand)                                     |
+| merchant_id, merchant_name | integer / string   | REQUIRED    | Chargeback's identifier for the merchant, or the name of the merchant.                                                                   |
+| card_prefix                | 6 numerical digits | RECOMMENDED | The first six digits of the card number. Alternatively, use the card_number field.                                                       |
+| card_suffix                | 4 numerical digits | RECOMMENDED | The last four digits of the card number. Alternatively, use the card_number field.                                                       |
+| card_number                | 13-16 char. string |             | If you use this field, you must pass the PAN in a masked format. Chargeback will extract the prefix and suffix.                          |
+| card_type                  | string             | (derived)   | The card network of the card used in the transaction. If not passed, Chargeback will ascertain based on card #                           |
+| card_exp                   | MM/YY              | RECOMMENDED | The expiration date captured at time of sale                                                                                             |
+| reported_avs_status        | string             | RECOMMENDED | If captured, the AVS status of the transaction                                                                                           |
+| reported_cvv_status        | string             | RECOMMENDED | If captured, the CVV status of the transaction                                                                                           |
+| currency_code              | ISO 4217 (string)  |             | Defaults to USD                                                                                                                          |
+| ip_address                 | dotted quad        | RECOMMENDED | The IP used by the cardholder to place the order in the merchant's sales platform. Will be compared with billing and shipping addresses. |
+| authorization_code         | string             | RECOMMENDED | If captured, the authorization code returned by the gateway                                                                              |
+| arn                        | string             | RECOMMENDED | The ARN, if known                                                                                                                        |
+| shipping_subtotal          | decimal            |             | The amount charged for shipping.                                                                                                         |
+| tax_subtotal               | decimal            |             | The amount charged for tax                                                                                                               |
+| source_url                 | string             |             | The url to access this order in the merchant's sales platform.                                                                           |
+|                            |                    |             |                                                                                                                                          |
+| tracking_numbers           | comma list         | RECOMMENDED | Comma-separated list of tracking numbers; each will generate new shipment objects. See shipment actions.                                 |
+|                            |                    |             |                                                                                                                                          |
+| line_items[]               |                    |             | The line items on the order; the products that were actually sold. line_items should be an array of json objects.                        |
+| - product_name             |                    |             | The name of the product sold, as it stood at the time of the order.                                                                      |
+| - product_description      |                    |             | The description of the product, as it stood at the time of the order.                                                                    |
+| - product_amount           | decimal            |             | The price of the product at the time of the order.                                                                                       |
+| - quantity                 | integer            |             | The number of this line item sold.                                                                                                       |
+| - subtotal                 | decimal            |             | Should be equal to quantity * subtotal. Can be computed from these if left blank.                                                        |
+| - source_product_id        | string             |             | The unique identifier of the product in the source system's backend database                                                             |
+|                            |                    |             |                                                                                                                                          |
+| [ CUSTOMER PROFILE ]       |                    |             | If the customer is a registered user in your system, pass the customer profile information                                               |
+| customer_email             | string             |             |                                                                                                                                          |
+| customer_last_name         | string             |             |                                                                                                                                          |
+| customer_first_name        | string             |             |                                                                                                                                          |
+| customer_phone             | string             |             |                                                                                                                                          |
+|                            |                    |             |                                                                                                                                          |
+| [ BILLING INFO ]           |                    |             | The billing information captured for this particular transaction                                                                         |
+| billing_last_name          |                    |             |                                                                                                                                          |
+| billing_first_name         |                    |             |                                                                                                                                          |
+| billing_address1           |                    |             |                                                                                                                                          |
+| billing_address2           |                    |             |                                                                                                                                          |
+| billing_city               |                    |             |                                                                                                                                          |
+| billing_state              |                    |             |                                                                                                                                          |
+| billing_country            |                    |             |                                                                                                                                          |
+| billing_postal             |                    |             |                                                                                                                                          |
+|                            |                    |             |                                                                                                                                          |
+| [ SYSTEM FIELDS ]          |                    |             | These fields are either computed, derived, or stored internally by chargeback, but may prove useful to some merchants.                   |
+| id                         | integer            |             | Chargeback's unique identifier for this order (maybe be used for updates)                                                                |
+| avs_status                 | string             |             | Normalized version of the reported_avs_status, if recognized                                                                             |
+| cvv_status                 | string             |             | Normalized version of the reported_cvv_status, if recognized                                                                             |
+| created_at                 | ISO 8601           |             | The time in UTC when the order record was originally added to the database                                                               |
+| updated_at                 | ISO 8601           |             | The last time in UTC when the order record was modified                                                                                  |
+| creator_id                 | integer            |             | The id of the creator of the record. For API calls, it will be the user record that authorized the call                                  |
+| creator_type               | string             |             | The type of creator of the record. For API calls, it will be the string 'User'                                                           |
+| manually_generated         | boolean            |             | This will only be set to true for records created in the web UI                                                                          |
+|                            |                    |             |                                                                                                                                          |
+| [ FUTURE SUPPORT ]         |                    |             | Don't use these fields yet, as they are not supported by this version of the API.                                                        |
+| canceled_ts                | ISO 8601           |             | If the order is canceled, pass this timestamp in an update call                                                                          |
+| refund_amount              | decimal            |             | If the order is refunded, pass this amount in an update call                                                                             |
+| refund_transaction_id      | string             |             | The payment gateway transaction id for the refund, passed in an update call                                                              |
+| full_refund_ts             | ISO 8601           |             | The timestamp an order's refund was issued                                                                                               |
+| partial_refund_ts          | ISO 8601           |             | The timestamp a partial refund was issued                                                                                                |
+| rma                        | string             |             | The return merchandise authorization code used in a return                                                                               |
 
 ### Create a New Order [POST]
 
