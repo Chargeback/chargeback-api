@@ -196,7 +196,7 @@
 <td>tracking_numbers</td>
 <td>comma list</td>
 <td>RECOMMENDED</td>
-<td>Comma-separated list of tracking numbers; each will generate new shipment objects. See shipment actions.</td>
+<td>Comma-separated list of tracking numbers; each will generate new shipment objects.</td>
 </tr>
 <tr>
 <td></td>
@@ -207,7 +207,7 @@
 <tr>
 <td>line_items[]</td>
 <td></td>
-<td></td>
+<td>RECOMMENDED</td>
 <td>The line items on the order; the products that were actually sold. line_items should be an array of json objects.</td>
 </tr>
 <tr>
@@ -253,7 +253,7 @@
 <td></td>
 </tr>
 <tr>
-<td>[ CUSTOMER PROFILE ]</td>
+<td>[ CUST. PROFILE ]</td>
 <td></td>
 <td></td>
 <td>If the customer is a registered user in your system, pass the customer profile information</td>
@@ -291,7 +291,7 @@
 <tr>
 <td>[ BILLING INFO ]</td>
 <td></td>
-<td></td>
+<td>RECOMMENDED</td>
 <td>The billing information captured for this particular transaction</td>
 </tr>
 <tr>
@@ -352,7 +352,7 @@
 <td>[ SYSTEM FIELDS ]</td>
 <td></td>
 <td></td>
-<td>These fields are either computed, derived, or stored internally by chargeback, but may prove useful to some merchants.</td>
+<td>These fields are either computed, derived, or stored internally by chargeback, but may prove useful to some merchants. If submitted to the api, they will be ignored.</td>
 </tr>
 <tr>
 <td>id</td>
@@ -409,7 +409,7 @@
 <td></td>
 </tr>
 <tr>
-<td>[ FUTURE SUPPORT ]</td>
+<td>[ FUTURE ]</td>
 <td></td>
 <td></td>
 <td>Don’t use these fields yet, as they are not supported by this version of the API.</td>
