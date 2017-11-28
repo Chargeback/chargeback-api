@@ -1,0 +1,626 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Chargeback API</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200');.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.right .hljs-comment{color:#969896}.right .css .hljs-class,.right .css .hljs-id,.right .css .hljs-pseudo,.right .hljs-attribute,.right .hljs-regexp,.right .hljs-tag,.right .hljs-variable,.right .html .hljs-doctype,.right .ruby .hljs-constant,.right .xml .hljs-doctype,.right .xml .hljs-pi,.right .xml .hljs-tag .hljs-title{color:#c66}.right .hljs-built_in,.right .hljs-constant,.right .hljs-literal,.right .hljs-number,.right .hljs-params,.right .hljs-pragma,.right .hljs-preprocessor{color:#de935f}.right .css .hljs-rule .hljs-attribute,.right .ruby .hljs-class .hljs-title{color:#f0c674}.right .hljs-header,.right .hljs-inheritance,.right .hljs-name,.right .hljs-string,.right .hljs-value,.right .ruby .hljs-symbol,.right .xml .hljs-cdata{color:#b5bd68}.right .css .hljs-hexcolor,.right .hljs-title{color:#8abeb7}.right .coffeescript .hljs-title,.right .hljs-function,.right .javascript .hljs-title,.right .perl .hljs-sub,.right .python .hljs-decorator,.right .python .hljs-title,.right .ruby .hljs-function .hljs-title,.right .ruby .hljs-title .hljs-keyword{color:#81a2be}.right .hljs-keyword,.right .javascript .hljs-function{color:#b294bb}.right .hljs{display:block;overflow-x:auto;background:#1d1f21;color:#c5c8c6;padding:.5em;-webkit-text-size-adjust:none}.right .coffeescript .javascript,.right .javascript .xml,.right .tex .hljs-formula,.right .xml .css,.right .xml .hljs-cdata,.right .xml .javascript,.right .xml .vbscript{opacity:.5}.hljs-comment,.hljs-quote{color:#9e8f9e}.hljs-attribute,.hljs-link,.hljs-name,.hljs-regexp,.hljs-selector-class,.hljs-selector-id,.hljs-tag,.hljs-template-variable,.hljs-variable{color:#ca402b}.hljs-built_in,.hljs-literal,.hljs-meta,.hljs-number,.hljs-params,.hljs-type{color:#a65926}.hljs-bullet,.hljs-string,.hljs-symbol{color:#918b3b}.hljs-section,.hljs-title{color:#516aec}.hljs-keyword,.hljs-selector-tag{color:#7b59c0}.hljs{display:block;overflow-x:auto;background:#1b181b;color:#ab9bab;padding:.5em}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}.right .hljs-comment,.right .hljs-quote{color:#776977}.right .hljs-attribute,.right .hljs-link,.right .hljs-name,.right .hljs-regexp,.right .hljs-selector-class,.right .hljs-selector-id,.right .hljs-tag,.right .hljs-template-variable,.right .hljs-variable{color:#ca402b}.right .hljs-built_in,.right .hljs-literal,.right .hljs-meta,.right .hljs-number,.right .hljs-params,.right .hljs-type{color:#a65926}.right .hljs-bullet,.right .hljs-string,.right .hljs-symbol{color:#918b3b}.right .hljs-section,.right .hljs-title{color:#516aec}.right .hljs-keyword,.right .hljs-selector-tag{color:#7b59c0}.right .hljs{display:block;overflow-x:auto;background:#f7f3f7;color:#695d69;padding:.5em}.right .hljs-emphasis{font-style:italic}.right .hljs-strong{font-weight:700}body{color:#c8c8c8;background:#272b30;font:400 14px / 1.42 'Roboto',Helvetica,sans-serif}header{border-bottom:1px solid #373d44;margin-bottom:12px}h1,h2,h3,h4,h5{color:#c8c8c8;margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:0;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}.triple h1 .permalink,.triple h2 .permalink,.triple h3 .permalink,.triple h4 .permalink,.triple h5 .permalink{opacity:.15}.triple h1:hover .permalink,.triple h2:hover .permalink,.triple h3:hover .permalink,.triple h4:hover .permalink,.triple h5:hover .permalink{opacity:.15}h1{font:200 36px 'Raleway',Helvetica,sans-serif;font-size:36px}h2{font:200 36px 'Raleway',Helvetica,sans-serif;font-size:30px}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:white;text-decoration:none}li p{margin:0}hr.split{border:0;height:1px;width:100%;padding-left:6px;margin:12px auto;background-image:linear-gradient(to right, rgba(200,200,200,0) 20%, rgba(200,200,200,0.2) 51.4%, rgba(39,43,48,0.2) 51.4%, rgba(39,43,48,0) 80%)}dl dt{float:left;width:130px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:150px}blockquote{color:rgba(200,200,200,0.5);font-size:15.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #2b3237}blockquote p:last-child{margin-bottom:0}pre{background-color:#202529;padding:12px;border:1px solid #424c54;border-radius:6px;overflow:auto}pre code{color:#c8c8c8;background-color:transparent;padding:0;border:none}code{color:#ddd;background-color:#373b40;font:'Inconsolata',monospace;padding:1px 4px;border:1px solid #424c54;border-radius:3px}ul,ol{padding-left:2em}table{border-collapse:collapse;border-spacing:0;margin-bottom:12px}table tr:nth-child(2n){background-color:#22262a}table th,table td{padding:6px 12px;border:1px solid #101214}.text-muted{opacity:.5}.note,.warning{padding:.3em 1em;margin:1em 0;border-radius:2px;font-size:90%}.note h1,.warning h1,.note h2,.warning h2,.note h3,.warning h3,.note h4,.warning h4,.note h5,.warning h5,.note h6,.warning h6{font-family:200 36px 'Raleway',Helvetica,sans-serif;font-size:135%;font-weight:500}.note p,.warning p{margin:.5em 0}.note{color:#c8c8c8;background-color:#2b373e;border-left:4px solid #5bc0de}.note h1,.note h2,.note h3,.note h4,.note h5,.note h6{color:#5bc0de}.warning{color:#c8c8c8;background-color:#352b30;border-left:4px solid #e9322d}.warning h1,.warning h2,.warning h3,.warning h4,.warning h5,.warning h6{color:#e9322d}header{margin-top:24px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .resource-group{padding:0}nav .resource-group .heading{position:relative}nav .resource-group .heading .chevron{position:absolute;top:12px;right:12px;opacity:.5}nav .resource-group .heading a{display:block;color:#c8c8c8;opacity:.7;border-left:2px solid transparent;margin:0}nav .resource-group .heading a:hover{text-decoration:none;background-color:bad-color;border-left:2px solid #c8c8c8}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:rgba(200,200,200,0.7);padding:8px 12px;border-top:1px solid #202020;border-left:2px solid transparent;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}nav ul a:hover{text-decoration:none;background-color:bad-color;border-left:2px solid #c8c8c8}nav ul>li{margin:0}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-12px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:#fff;background-color:#373d44;border-radius:10px;margin:-2px 0}.badge.get{color:white;background-color:#5bc0de}.badge.head{color:white;background-color:#5bc0de}.badge.options{color:white;background-color:#5bc0de}.badge.put{color:white;background-color:#f89406}.badge.patch{color:white;background-color:#f89406}.badge.post{color:white;background-color:#62c462}.badge.delete{color:white;background-color:#ee5f5b}.collapse-button{float:right}.collapse-button .close{display:none;color:white;cursor:pointer}.collapse-button .open{color:white;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%}.container-fluid.triple nav{width:16.5%;padding-right:1px}.container-fluid.triple .row .content{position:relative;margin-left:16.5%;padding-left:24px}.middle:before,.middle:after{content:'';display:table}.middle:after{clear:both}.middle{box-sizing:border-box;width:51.5%;padding-right:12px}.right{box-sizing:border-box;float:right;width:48.5%;padding-left:12px}.right a{color:#666}.right h1,.right h2,.right h3,.right h4,.right h5,.right p,.right div{color:#272b30}.right pre{background-color:#f7f6f5;border:1px solid #f7f6f5}.right pre code{color:#333}.right .description{margin-top:12px}.triple .resource-heading{font-size:125%}.definition{margin-top:12px;margin-bottom:12px}.definition .method{font-weight:bold}.definition .method.get{color:#2e98b8}.definition .method.head{color:#2e98b8}.definition .method.options{color:#2e98b8}.definition .method.post{color:#2eb82e}.definition .method.put{color:#b87f2e}.definition .method.patch{color:#b87f2e}.definition .method.delete{color:#b8322e}.definition .uri{word-break:break-all;word-wrap:break-word}.definition .hostname{opacity:.5}.example-names{background-color:#eee;padding:12px;border-radius:6px}.example-names .tab-button{cursor:pointer;color:#c8c8c8;border:1px solid #ddd;padding:6px;margin-left:12px}.example-names .tab-button.active{background-color:#d5d5d5}.right .example-names{background-color:#adaaa6}.right .example-names .tab-button{color:#272b30;border:1px solid #d8d4cf;border-radius:6px}.right .example-names .tab-button.active{background-color:#95918b}#nav-background{position:fixed;left:0;top:0;bottom:0;width:16.5%;padding-right:14.4px;background-color:#272b30;border-right:1px solid #272b30;z-index:-1}#right-panel-background{position:absolute;right:-12px;top:-12px;bottom:-12px;width:48.6%;background-color:#d8d4cf;z-index:-1}@media (max-width:1200px){nav{width:198px}.container{max-width:840px}.container .row .content{margin-left:224px;width:606px}}@media (max-width:992px){nav{width:169.4px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content,.container-fluid.triple .row .content{margin-left:auto;margin-right:auto;width:95%}#nav-background{display:none}#right-panel-background{width:48.6%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(200,200,200,0.5);background-color:#373d44;text-decoration:none !important;border-top:1px solid #202020;border-left:1px solid #202020;border-right:1px solid #202020;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px;margin-bottom:12px;background-color:#272b30;border:1px solid #202020;border-radius:6px}.resource-group h2.group-heading,.resource-group .heading a{padding:12px;margin:-12px -12px 12px -12px;background-color:#373d44;border-bottom:1px solid #202020;border-top-left-radius:6px;border-top-right-radius:6px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.triple .content .resource-group{padding:0;border:none}.triple .content .resource-group h2.group-heading,.triple .content .resource-group .heading a{margin:0 0 12px 0;border:1px solid #202020}nav .resource-group .heading a{padding:12px;margin-bottom:0}nav .resource-group .collapse-content{padding:0}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:6px}.action h4.action-heading{padding:6px 12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:6px;border-top-right-radius:6px;overflow:hidden}.action h4.action-heading .name{float:right;font-weight:normal;padding:6px 0}.action h4.action-heading .method{padding:6px 12px;margin-right:12px;border-radius:3px;display:inline-block}.action h4.action-heading .method.get{color:#fff;background-color:#2390b0}.action h4.action-heading .method.head{color:#fff;background-color:#2390b0}.action h4.action-heading .method.options{color:#fff;background-color:#2390b0}.action h4.action-heading .method.put{color:#fff;background-color:#945904}.action h4.action-heading .method.patch{color:#fff;background-color:#945904}.action h4.action-heading .method.post{color:#fff;background-color:#348c34}.action h4.action-heading .method.delete{color:#fff;background-color:#ce1a15}.action h4.action-heading code{color:black;background-color:rgba(255,255,255,0.7);border-color:transparent;font-weight:normal;word-break:break-all;display:inline-block;margin-top:2px}.action dl.inner{padding-bottom:2px}.action .title{border-bottom:1px solid #272b30;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#202020}.action.get h4.action-heading{color:#2390b0;background:#5bc0de;border-bottom-color:#202020}.action.head{border-color:#202020}.action.head h4.action-heading{color:#2390b0;background:#5bc0de;border-bottom-color:#202020}.action.options{border-color:#202020}.action.options h4.action-heading{color:#2390b0;background:#5bc0de;border-bottom-color:#202020}.action.post{border-color:#202020}.action.post h4.action-heading{color:#348c34;background:#62c462;border-bottom-color:#202020}.action.put{border-color:#202020}.action.put h4.action-heading{color:#945904;background:#f89406;border-bottom-color:#202020}.action.patch{border-color:#202020}.action.patch h4.action-heading{color:#945904;background:#f89406;border-bottom-color:#202020}.action.delete{border-color:#202020}.action.delete h4.action-heading{color:#ce1a15;background:#ee5f5b;border-bottom-color:#202020}</style></head><body class="preload"><div id="nav-background"></div><div class="container-fluid triple"><div class="row"><nav><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#top">Overview</a></div><div class="collapse-content"><ul><li><a href="#header-authentication">Authentication</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#order-collection">Order Collection</a></div><div class="collapse-content"><ul><li><a href="#header-order-[orders.json]">Order [orders.json]</a></li><li><a href="#header-create-a-new-order-[post]">Create a New Order [POST]</a></li><li><a href="#header-search-list-orders-[get]">Search / List Orders [GET]</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#single-order">Single Order</a></div><div class="collapse-content"><ul><li><a href="#header-order-[orders-12345678.json]">Order [orders/12345678.json]</a></li><li><a href="#header-show-an-existing-order-[get]">Show an existing Order [GET]</a></li><li><a href="#header-update-an-existing-order-[put]">Update an existing Order [PUT]</a></li><li><a href="#header-submit-(create-or-update)-an-order-[put]">Submit (create or update) an Order [PUT]</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#transactions">Transactions</a></div><div class="collapse-content"><ul><li><a href="#transactions-transaction">Transaction</a><ul></ul></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#disputes">Disputes</a></div><div class="collapse-content"><ul><li><a href="#disputes-dispute">Dispute</a><ul></ul></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#alerts">Alerts</a></div><div class="collapse-content"><ul><li><a href="#alerts-alert">Alert</a><ul></ul></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#mids">Mids</a></div><div class="collapse-content"><ul><li><a href="#mids-mid">Mid</a><ul></ul></li></ul></div></div><p style="text-align: center; word-wrap: break-word;"><a href="http://api.chargeback.com/">http://api.chargeback.com/</a></p></nav><div class="content"><div id="right-panel-background"></div><div class="middle"><header><h1 id="top">Chargeback API</h1></header></div><div class="right"><h5>API Endpoint</h5><a href="http://api.chargeback.com/">http://api.chargeback.com/</a></div><div class="middle"><p>The Chargeback API is a collection of RESTful JSON calls. The API uses standardized HTTP verbs and resource routes. Whenever possible, all JSON results will use a standardized format.</p>
+<p>Depending on the access controls granted to the key authorizing the request, some actions may be unavailable.</p>
+<h2 id="header-authentication">Authentication <a class="permalink" href="#header-authentication" aria-hidden="true">¶</a></h2>
+<p>The Chargeback API uses HTTP Basic Authentication. Your credentials to use the web application can have API access enabled, and the same resources will be available.</p>
+</div><div class="middle"><section id="order-collection" class="resource-group"><h2 class="group-heading">Order Collection <a href="#order-collection" class="permalink">&para;</a></h2><p>Create and search Orders.</p>
+<h2 id="header-order-[orders.json]">Order [orders.json] <a class="permalink" href="#header-order-[orders.json]" aria-hidden="true">¶</a></h2>
+<p>A Order object represents a single sales order in the ecommerce platform, POS system, or sales platform for the merchant. It has the following attributes:</p>
+<ul>
+<li>
+<p>crm_id - Chargeback’s unique identifier for a data source that acts as sales platform</p>
+</li>
+<li>
+<p>merchant_id - Chargeback’s unique identifier for the merchant</p>
+</li>
+<li>
+<p>order_id - The remote system’s unique identifier for the order</p>
+</li>
+<li>
+<p>order_ts - The remote system’s “order completed” timestamp in ISO 8601 UTC format</p>
+</li>
+<li>
+<p>order_amount - The final, total amount of the order. It should be the sum of line_item subtotals, shipping_subtotal, and tax_subtotal</p>
+</li>
+<li>
+<p>transaction_id - The transaction id from the payment gateway for the credit card transaction</p>
+</li>
+<li>
+<p>transaction_amount - The amount charged in the payment gateway for the credit card transaction.</p>
+</li>
+<li>
+<p>card_type - The card network of the card used in the transaction. If not passed, Chargeback will ascertain based on the card number</p>
+</li>
+<li>
+<p>card_prefix - The first six digits of the card number. Alternatively, use the card_number field.</p>
+</li>
+<li>
+<p>card_suffix - The last four digits of the card number. Alternatively, use the card_number field.</p>
+</li>
+<li>
+<p>card_number - If you use this field, you must pass the PAN in a masked format. Chargeback will extract the prefix and suffix.</p>
+</li>
+<li>
+<p>card_exp - The expiration date captured at time of sale</p>
+</li>
+<li>
+<p>reported_avs_status - If captured, the AVS status of the transaction</p>
+</li>
+<li>
+<p>reported_cvv_status - If captured, the CVV status of the transaction</p>
+</li>
+<li>
+<p>currency_code - Defaults to USD, please use ISO 4217</p>
+</li>
+<li>
+<p>ip_address - The IP used by the cardholder to place the order in the merchant’s sales platform</p>
+</li>
+<li>
+<p>authorization_code - If captured, the authorization code returned by the payment gateway</p>
+</li>
+<li>
+<p>arn - The ARN, if known</p>
+</li>
+<li>
+<p>shipping_subtotal - The total amount charged for shipping.</p>
+</li>
+<li>
+<p>tax_subtotal - The total amount charged for tax</p>
+</li>
+<li>
+<p>source_url - The url to access this order in the merchant’s sales platform.</p>
+</li>
+<li>
+<p>tracking_numbers - Comma-separated list of tracking numbers; each will generate new shipment objects. See shipment actions.</p>
+</li>
+<li>
+<p>customer_email - email from the customer profile</p>
+</li>
+<li>
+<p>customer_first_name - first name from the customer profile</p>
+</li>
+<li>
+<p>customer_last_name - last name from the customer profile</p>
+</li>
+<li>
+<p>customer_phone - phone number from the customer profile</p>
+</li>
+<li>
+<p>billing_first_name - the billing first name used in this particular order</p>
+</li>
+<li>
+<p>billing_last_name - the billing last name used in this particular order</p>
+</li>
+<li>
+<p>billing_address1 - the billing address used in this particular order</p>
+</li>
+<li>
+<p>billing_address2 - the billing address line 2 used in this particular order</p>
+</li>
+<li>
+<p>billing_city - the billing city used in this particular order</p>
+</li>
+<li>
+<p>billing_state - the billing state used in this particular order</p>
+</li>
+<li>
+<p>billing_country - the billing country used in this particular order</p>
+</li>
+<li>
+<p>billing_postal - the billing postal code used in this particular order</p>
+</li>
+<li>
+<p>id - CB system field for unique identifier for this order (maybe used for updates)</p>
+</li>
+<li>
+<p>avs_status - CB system field for normalized version of the reported_avs_status, if recognized</p>
+</li>
+<li>
+<p>cvv_status - CB system field for normalized version of the reported_cvv_status, if recognized</p>
+</li>
+<li>
+<p>created_at - CB system field for the time in UTC when the order record was originally added to the database</p>
+</li>
+<li>
+<p>updated_at - CB system field for the last time in UTC when the order record was modified</p>
+</li>
+<li>
+<p>creator_id - CB system field for the id of the creator of the record. For API calls, it will be the user record that authorized the call</p>
+</li>
+<li>
+<p>creator_type - CB system field for the type of creator of the record. For API calls, it will be the string ‘User’</p>
+</li>
+<li>
+<p>manually_generated - CB system field for identifying records created manually in the web UI</p>
+</li>
+<li>
+<p>line_items - an array of line items</p>
+<ul>
+<li>product_name - The name of the product sold, as it stood at the time of the order.</li>
+<li>product_description - The description of the product, as it stood at the time of the order.</li>
+<li>product_amount - The price of the product at the time of the order.</li>
+<li>quantity - The number of this line item sold.</li>
+<li>subtotal - Should be equal to quantity * subtotal. Can be computed from these if left blank.</li>
+<li>source_product_id - The unique identifier of the product in the source system’s backend database</li>
+</ul>
+</li>
+<li>
+<p>shipments - an array of shipping tracking information. In most cases, the array will be auto-populated by shipper integrations if tracking_numbers are passed. If you know the shipper is unsupported by Chargeback’s platform, you may pass additional keys to provide correct shipment information.</p>
+<ul>
+<li>id - The Chargeback internal unique identifier for this shipment</li>
+<li>tracking_number - The tracking number provided by the shipping partner to identify the shipment.</li>
+<li>shipped_ts - The date the shipment was sent.</li>
+<li>tracking_summary - A description from the shipping partner about the shipment.</li>
+<li>source_url - When available, the URL of the shipment at the shipping partner website</li>
+<li>origin_name - Identifying information about the sender</li>
+<li>origin_address1 - Identifying information about the sender</li>
+<li>origin_address2 - Identifying information about the sender</li>
+<li>origin_city - Identifying information about the sender</li>
+<li>origin_state - Identifying information about the sender</li>
+<li>origin_country - Identifying information about the sender</li>
+<li>origin_zip - Identifying information about the sender</li>
+<li>destination_name - Identifying information about the recipient</li>
+<li>destination_address1 - Identifying information about the recipient</li>
+<li>destination_address2 - Identifying information about the recipient</li>
+<li>destination_city - Identifying information about the recipient</li>
+<li>destination_state - Identifying information about the recipient</li>
+<li>destination_country - Identifying information about the recipient</li>
+<li>destination_zip - Identifying information about the recipient</li>
+<li>status - Additional field available from some shipping partners</li>
+<li>status_code - Additional field available from some shipping partners</li>
+<li>status_description - Additional field available from some shipping partners</li>
+<li>scheduled_delivery_date - Additional field available from some shipping partners</li>
+<li>actual_delivery_date - Additional field available from some shipping partners</li>
+<li>attempted_delivery_date - Additional field available from some shipping partners</li>
+<li>weight - Additional field available from some shipping partners</li>
+<li>left_at - Additional field available from some shipping partners</li>
+<li>service - Additional field available from some shipping partners</li>
+<li>dimensions - Additional field available from some shipping partners</li>
+<li>packaging - Additional field available from some shipping partners</li>
+<li>packaging_count - Additional field available from some shipping partners</li>
+<li>purchase_order_number - Additional field available from some shipping partners</li>
+<li>invoice_number - Additional field available from some shipping partners</li>
+<li>reference - Additional field available from some shipping partners</li>
+<li>shipper_id - CB identifier for the shipping partner.</li>
+<li>shipper_name</li>
+</ul>
+</li>
+</ul>
+<h3 id="header-create-a-new-order-[post]">Create a New Order [POST] <a class="permalink" href="#header-create-a-new-order-[post]" aria-hidden="true">¶</a></h3>
+<p>You may report a completed Order using this action. It takes a JSON object.</p>
+<ul>
+<li>
+<p>Request (application/json)</p>
+<pre><code>{
+      <span class="hljs-string">'crm_id : 444,
+      '</span>merchant_id<span class="hljs-string">' : 12345,
+      '</span>order_id<span class="hljs-string">' : '</span>abc123<span class="hljs-string">',
+      '</span>order_ts<span class="hljs-string">' : '</span><span class="hljs-number">2017</span>-<span class="hljs-number">11</span>-<span class="hljs-number">27</span>T23:<span class="hljs-number">59</span>:<span class="hljs-number">26</span>Z<span class="hljs-string">'
+      '</span>order_amount<span class="hljs-string">' : '</span><span class="hljs-number">177.16</span><span class="hljs-string">',
+      '</span>transaction_id<span class="hljs-string">' : '</span>qwertyzzz<span class="hljs-string">',
+      '</span>transaction_amount<span class="hljs-string">' : '</span><span class="hljs-number">55.00</span><span class="hljs-string">',
+      '</span>card_prefix<span class="hljs-string">' : '</span><span class="hljs-number">444321</span><span class="hljs-string">',
+      '</span>card_suffix<span class="hljs-string">' : '</span><span class="hljs-number">8215</span><span class="hljs-string">',
+      '</span>card_exp<span class="hljs-string">' : '</span><span class="hljs-number">05</span>/<span class="hljs-number">21</span><span class="hljs-string">',
+      '</span>reported_avs_status<span class="hljs-string">' : '</span>Y<span class="hljs-string">',
+      '</span>reported_cvv_status<span class="hljs-string">' : '</span>M<span class="hljs-string">',
+      '</span>ip_address<span class="hljs-string">' : '</span><span class="hljs-number">172.98</span>.<span class="hljs-number">44.123</span><span class="hljs-string">',
+      '</span>authorization_code<span class="hljs-string">' : '</span>xxyyzz<span class="hljs-string">',
+      '</span>shipping_subtotal<span class="hljs-string">' : '</span><span class="hljs-number">5.00</span><span class="hljs-string">',
+      '</span>tax_subtotal<span class="hljs-string">' : '</span><span class="hljs-number">5.00</span><span class="hljs-string">',
+      '</span><span class="hljs-built_in">source</span>_url<span class="hljs-string">' : '</span>https://my-magento-site.com/admin-area/order-search.php?order_id=abc123<span class="hljs-string">',
+      '</span>tracking_numbers<span class="hljs-string">' : '</span><span class="hljs-number">1</span>ZY2F2150255600110<span class="hljs-string">',
+      '</span>line_items<span class="hljs-string">' : [
+          {
+              '</span>product_name<span class="hljs-string">' : '</span>MIRRORLESS MICRO FOUR THIRDS <span class="hljs-number">45</span>-<span class="hljs-number">150</span> MM<span class="hljs-string">',
+              '</span>product_description<span class="hljs-string">' : '</span>PANASONIC LUMIX G VARIO LENS, <span class="hljs-number">45</span>-<span class="hljs-number">150</span>MM, F4.<span class="hljs-number">0</span>-<span class="hljs-number">5.6</span> ASPH., MIRRORLESS MICRO FOUR THIRDS, MEGA OPTICAL I.S., H-FS45150AK (USA BLACK)<span class="hljs-string">',
+              '</span>product_amount<span class="hljs-string">' : '</span><span class="hljs-number">147.99</span><span class="hljs-string">',
+              '</span>quantity<span class="hljs-string">' : 1,
+              '</span>subtotal<span class="hljs-string">' : '</span><span class="hljs-number">147.99</span><span class="hljs-string">',
+              '</span><span class="hljs-built_in">source</span>_product_id<span class="hljs-string">' : '</span>prod-<span class="hljs-number">123</span><span class="hljs-string">'
+          },
+          {
+              '</span>product_name<span class="hljs-string">' : '</span>Lens Cap<span class="hljs-string">',
+              '</span>product_description<span class="hljs-string">' : '</span>Lens <span class="hljs-built_in">cap</span> with lanyard fits most panasonic lumix cameras<span class="hljs-string">',
+              '</span>product_amount<span class="hljs-string">' : '</span><span class="hljs-number">5.99</span><span class="hljs-string">',
+              '</span>quantity<span class="hljs-string">' : 2,
+              '</span>subtotal<span class="hljs-string">' : '</span><span class="hljs-number">11.98</span><span class="hljs-string">',
+              '</span><span class="hljs-built_in">source</span>_product_id<span class="hljs-string">' : '</span>prod-<span class="hljs-number">777</span><span class="hljs-string">'
+          }
+      ],
+      '</span>shipping_subtotal<span class="hljs-string">' : '</span><span class="hljs-number">5.99</span><span class="hljs-string">',
+      '</span>tax_subtotal<span class="hljs-string">' : '</span><span class="hljs-number">11.20</span><span class="hljs-string">',
+      '</span>billing_first_name<span class="hljs-string">' : '</span>Nate<span class="hljs-string">',
+      '</span>billing_last_name<span class="hljs-string">' : '</span>Smith<span class="hljs-string">',
+      '</span>billing_address1<span class="hljs-string">' : '</span><span class="hljs-number">12345</span> My Actual House<span class="hljs-string">',
+      '</span>billing_city<span class="hljs-string">' : '</span>South Jordan<span class="hljs-string">',
+      '</span>billing_state<span class="hljs-string">' : '</span>UT<span class="hljs-string">',
+      '</span>billing_country<span class="hljs-string">' : '</span>USA<span class="hljs-string">',
+      '</span>billing_postal<span class="hljs-string">' : '</span><span class="hljs-number">84009</span><span class="hljs-string">',
+  }
+</span></code></pre>
+</li>
+<li>
+<p>Response 201 (application/json)</p>
+<ul>
+<li>
+<p>Headers</p>
+<pre><code><span class="hljs-attribute">Location</span>: <span class="hljs-string">orders/12345678.json</span></code></pre>
+</li>
+<li>
+<p>Body
+{
+‘id’ : ‘12345678’,
+‘avs_status’ : ‘Y’,
+‘cvv_status’ : ‘M’,
+‘created_at’ : ‘2017-11-28T00:01:42Z’,
+‘updated_at’ : ‘2017-11-28T00:01:42Z’,
+‘creator_id’ : ‘55555’,
+‘creator_type’ : ‘User’,
+‘manually_generated’ : false,
+‘shipments’ : [
+{
+‘tracking_number’ : ‘1ZY2F2150255600110’,
+‘tracking_summary’: null,
+‘shipper_name’ : ‘UPS’,
+‘shipped_ts’ : null,
+‘origin_name’ : ‘Cameras R Us’,
+‘origin_address1’ : ‘555 A Texas Road’,
+‘origin_city’ : ‘Austin’,
+‘origin_state’ : ‘TX’,
+‘origin_country’ : ‘USA’,
+‘origin_zip’ : ‘73301’,
+‘destination_first_name’ : ‘Nate’
+‘destination_last_name’ : ‘Smith’,
+‘destination_address1’ : ‘10235 S. Jordan Gateway’,
+‘destination_address2’ : ‘Suite 500’,
+‘destination_city’ : ‘South Jordan’,
+‘destination_state’ : ‘UT’,
+‘destination_country’ : ‘USA’,
+‘destination_zip’ : ‘84095’,
+}
+],
+‘crm_id’ : 444,
+‘merchant_id’ : 12345,
+‘order_id’ : ‘abc123’,
+‘order_ts’ : ‘2017-11-27T23:59:26Z’
+‘order_amount’ : ‘177.16’,
+‘transaction_id’ : ‘qwertyzzz’,
+‘transaction_amount’ : ‘55.00’,
+‘card_prefix’ : ‘444321’,
+‘card_suffix’ : ‘8215’,
+‘card_exp’ : ‘05/21’,
+‘reported_avs_status’ : ‘Y’,
+‘reported_cvv_status’ : ‘M’,
+‘ip_address’ : ‘172.98.44.123’,
+‘authorization_code’ : ‘xxyyzz’,
+‘shipping_subtotal’ : ‘5.00’,
+‘tax_subtotal’ : ‘5.00’,
+‘source_url’ : ’<a href="https://my-magento-site.com/admin-area/order-search.php?order_id=abc123">https://my-magento-site.com/admin-area/order-search.php?order_id=abc123</a>',
+‘tracking_numbers’ : ‘1ZY2F2150255600110’,
+‘line_items’ : [
+{
+‘product_name’ : ‘MIRRORLESS MICRO FOUR THIRDS 45-150 MM’,
+‘product_description’ : ‘PANASONIC LUMIX G VARIO LENS, 45-150MM, F4.0-5.6 ASPH., MIRRORLESS MICRO FOUR THIRDS, MEGA OPTICAL I.S., H-FS45150AK (USA BLACK)’,
+‘product_amount’ : ‘147.99’,
+‘quantity’ : 1,
+‘subtotal’ : ‘147.99’,
+‘source_product_id’ : ‘prod-123’
+},
+{
+‘product_name’ : ‘Lens Cap’,
+‘product_description’ : ‘Lens cap with lanyard fits most panasonic lumix cameras’,
+‘product_amount’ : ‘5.99’,
+‘quantity’ : 2,
+‘subtotal’ : ‘11.98’,
+‘source_product_id’ : ‘prod-777’
+}
+],
+‘shipping_subtotal’ : ‘5.99’,
+‘tax_subtotal’ : ‘11.20’,
+‘billing_first_name’ : ‘Nate’,
+‘billing_last_name’ : ‘Smith’,
+‘billing_address1’ : ‘12345 My Actual House’,
+‘billing_city’ : ‘South Jordan’,
+‘billing_state’ : ‘UT’,
+‘billing_country’ : ‘USA’,
+‘billing_postal’ : ‘84009’,
+}</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="header-search-list-orders-[get]">Search / List Orders [GET] <a class="permalink" href="#header-search-list-orders-[get]" aria-hidden="true">¶</a></h3>
+<p>You may search existing orders that your api user is authorized to view.</p>
+<p>TODO: More information here about search keys, pagination, and some request / response examples.</p>
+</section></div><div class="middle"><section id="single-order" class="resource-group"><h2 class="group-heading">Single Order <a href="#single-order" class="permalink">&para;</a></h2><p>View and update single orders</p>
+<h2 id="header-order-[orders-12345678.json]">Order [orders/12345678.json] <a class="permalink" href="#header-order-[orders-12345678.json]" aria-hidden="true">¶</a></h2>
+<h3 id="header-show-an-existing-order-[get]">Show an existing Order [GET] <a class="permalink" href="#header-show-an-existing-order-[get]" aria-hidden="true">¶</a></h3>
+<p>You may view an existing Order record and its details.</p>
+<h3 id="header-update-an-existing-order-[put]">Update an existing Order [PUT] <a class="permalink" href="#header-update-an-existing-order-[put]" aria-hidden="true">¶</a></h3>
+<p>You may update information about an Order already reported to Chargeback using this action. You must specify the Order based on Chargeback’s unique identifier (id) for the Order.</p>
+<ul>
+<li>
+<p>Request (application/json)
+{
+‘id’ : 12345678,
+‘billing_address1’ : ‘12345 a different address’,
+‘billing_city’ : ‘Another City’,
+‘billing_state’ : ‘CA’,
+‘billing_country’ : ‘USA’,
+‘billing_postal’ : ‘90233’
+}</p>
+</li>
+<li>
+<p>Response 201 (application/json)</p>
+<ul>
+<li>
+<p>Headers</p>
+<pre><code><span class="hljs-attribute">Location</span>: <span class="hljs-string">orders/12345678.json</span></code></pre>
+</li>
+<li>
+<p>Body
+{
+‘id’ : ‘12345678’,
+‘etc’ : ‘…’
+}</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="header-submit-(create-or-update)-an-order-[put]">Submit (create or update) an Order [PUT] <a class="permalink" href="#header-submit-(create-or-update)-an-order-[put]" aria-hidden="true">¶</a></h3>
+<p>You may create or update orders based on the unique identifiers (crm_id, merchant_id, order_id) of the order. If such a record already exists, it will be updated. Otherwise, a new record will be created.</p>
+<ul>
+<li>
+<p>Request (application/json)
+{
+‘crm_id’ : 777,
+‘merchant_id’ : 8888,
+‘order_id’ : ‘abcdef54321’,
+‘etc’: ‘…’
+}</p>
+</li>
+<li>
+<p>Response 201 (application/json)</p>
+<ul>
+<li>
+<p>Headers</p>
+<pre><code><span class="hljs-attribute">Location</span>: <span class="hljs-string">orders/55555.json</span></code></pre>
+</li>
+<li>
+<p>Body
+{
+‘id’ : 55555,
+‘etc’ : ‘…’
+}</p>
+</li>
+</ul>
+</li>
+</ul>
+</section></div><div class="middle"><section id="transactions" class="resource-group"><h2 class="group-heading">Transactions <a href="#transactions" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="transactions-transaction" class="resource"><h3 class="resource-heading">Transaction <a href="#transactions-transaction" class="permalink">&para;</a></h3><p>A Transaction object represents a single credit card transaction in the payment gateway.</p>
+</div></div><div class="middle"><section id="disputes" class="resource-group"><h2 class="group-heading">Disputes <a href="#disputes" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="disputes-dispute" class="resource"><h3 class="resource-heading">Dispute <a href="#disputes-dispute" class="permalink">&para;</a></h3><p>A Dispute is a retrieval request, chargeback, or pre_arbitration / second chargeback reported by the payment processor.</p>
+</div></div><div class="middle"><section id="alerts" class="resource-group"><h2 class="group-heading">Alerts <a href="#alerts" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="alerts-alert" class="resource"><h3 class="resource-heading">Alert <a href="#alerts-alert" class="permalink">&para;</a></h3><p>An Alert notifies of a pending chargeback.</p>
+</div></div><div class="middle"><section id="mids" class="resource-group"><h2 class="group-heading">Mids <a href="#mids" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="mids-mid" class="resource"><h3 class="resource-heading">Mid <a href="#mids-mid" class="permalink">&para;</a></h3><p>The MID, or Merchant ID, is an identifier for the merchant account. Since larger merchants often use many MIDs, you can use the MID endpoints to keep Chargeback up-to-date with the MIDs you are using.</p>
+</div></div><div class="middle"><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 28 Nov 2017</p></div></div></div></div><script>/* eslint-env browser */
+/* eslint quotes: [2, "single"] */
+'use strict';
+
+/*
+  Determine if a string ends with another string.
+*/
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+/*
+  Get a list of direct child elements by class name.
+*/
+function childrenByClass(element, name) {
+  var filtered = [];
+
+  for (var i = 0; i < element.children.length; i++) {
+    var child = element.children[i];
+    var classNames = child.className.split(' ');
+    if (classNames.indexOf(name) !== -1) {
+      filtered.push(child);
+    }
+  }
+
+  return filtered;
+}
+
+/*
+  Get an array [width, height] of the window.
+*/
+function getWindowDimensions() {
+  var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.body,
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+  return [x, y];
+}
+
+/*
+  Collapse or show a request/response example.
+*/
+function toggleCollapseButton(event) {
+    var button = event.target.parentNode;
+    var content = button.parentNode.nextSibling;
+    var inner = content.children[0];
+
+    if (button.className.indexOf('collapse-button') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        // Currently showing, so let's hide it
+        button.className = 'collapse-button';
+        content.style.maxHeight = '0px';
+    } else {
+        // Currently hidden, so let's show it
+        button.className = 'collapse-button show';
+        content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+function toggleTabButton(event) {
+    var i, index;
+    var button = event.target;
+
+    // Get index of the current button.
+    var buttons = childrenByClass(button.parentNode, 'tab-button');
+    for (i = 0; i < buttons.length; i++) {
+        if (buttons[i] === button) {
+            index = i;
+            button.className = 'tab-button active';
+        } else {
+            buttons[i].className = 'tab-button';
+        }
+    }
+
+    // Hide other tabs and show this one.
+    var tabs = childrenByClass(button.parentNode.parentNode, 'tab');
+    for (i = 0; i < tabs.length; i++) {
+        if (i === index) {
+            tabs[i].style.display = 'block';
+        } else {
+            tabs[i].style.display = 'none';
+        }
+    }
+}
+
+/*
+  Collapse or show a navigation menu. It will not be hidden unless it
+  is currently selected or `force` has been passed.
+*/
+function toggleCollapseNav(event, force) {
+    var heading = event.target.parentNode;
+    var content = heading.nextSibling;
+    var inner = content.children[0];
+
+    if (heading.className.indexOf('heading') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+      // Currently showing, so let's hide it, but only if this nav item
+      // is already selected. This prevents newly selected items from
+      // collapsing in an annoying fashion.
+      if (force || window.location.hash && endsWith(event.target.href, window.location.hash)) {
+        content.style.maxHeight = '0px';
+      }
+    } else {
+      // Currently hidden, so let's show it
+      content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+/*
+  Refresh the page after a live update from the server. This only
+  works in live preview mode (using the `--server` parameter).
+*/
+function refresh(body) {
+    document.querySelector('body').className = 'preload';
+    document.body.innerHTML = body;
+
+    // Re-initialize the page
+    init();
+    autoCollapse();
+
+    document.querySelector('body').className = '';
+}
+
+/*
+  Determine which navigation items should be auto-collapsed to show as many
+  as possible on the screen, based on the current window height. This also
+  collapses them.
+*/
+function autoCollapse() {
+  var windowHeight = getWindowDimensions()[1];
+  var itemsHeight = 64; /* Account for some padding */
+  var itemsArray = Array.prototype.slice.call(
+    document.querySelectorAll('nav .resource-group .heading'));
+
+  // Get the total height of the navigation items
+  itemsArray.forEach(function (item) {
+    itemsHeight += item.parentNode.offsetHeight;
+  });
+
+  // Should we auto-collapse any nav items? Try to find the smallest item
+  // that can be collapsed to show all items on the screen. If not possible,
+  // then collapse the largest item and do it again. First, sort the items
+  // by height from smallest to largest.
+  var sortedItems = itemsArray.sort(function (a, b) {
+    return a.parentNode.offsetHeight - b.parentNode.offsetHeight;
+  });
+
+  while (sortedItems.length && itemsHeight > windowHeight) {
+    for (var i = 0; i < sortedItems.length; i++) {
+      // Will collapsing this item help?
+      var itemHeight = sortedItems[i].nextSibling.offsetHeight;
+      if ((itemsHeight - itemHeight <= windowHeight) || i === sortedItems.length - 1) {
+        // It will, so let's collapse it, remove its content height from
+        // our total and then remove it from our list of candidates
+        // that can be collapsed.
+        itemsHeight -= itemHeight;
+        toggleCollapseNav({target: sortedItems[i].children[0]}, true);
+        sortedItems.splice(i, 1);
+        break;
+      }
+    }
+  }
+}
+
+/*
+  Initialize the interactive functionality of the page.
+*/
+function init() {
+    var i, j;
+
+    // Make collapse buttons clickable
+    var buttons = document.querySelectorAll('.collapse-button');
+    for (i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = toggleCollapseButton;
+
+        // Show by default? Then toggle now.
+        if (buttons[i].className.indexOf('show') !== -1) {
+            toggleCollapseButton({target: buttons[i].children[0]});
+        }
+    }
+
+    var responseCodes = document.querySelectorAll('.example-names');
+    for (i = 0; i < responseCodes.length; i++) {
+        var tabButtons = childrenByClass(responseCodes[i], 'tab-button');
+        for (j = 0; j < tabButtons.length; j++) {
+            tabButtons[j].onclick = toggleTabButton;
+
+            // Show by default?
+            if (j === 0) {
+                toggleTabButton({target: tabButtons[j]});
+            }
+        }
+    }
+
+    // Make nav items clickable to collapse/expand their content.
+    var navItems = document.querySelectorAll('nav .resource-group .heading');
+    for (i = 0; i < navItems.length; i++) {
+        navItems[i].onclick = toggleCollapseNav;
+
+        // Show all by default
+        toggleCollapseNav({target: navItems[i].children[0]});
+    }
+}
+
+// Initial call to set up buttons
+init();
+
+window.onload = function () {
+    autoCollapse();
+    // Remove the `preload` class to enable animations
+    document.querySelector('body').className = '';
+};
+</script></body></html>
