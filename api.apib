@@ -249,6 +249,29 @@ You may search existing orders that your api user is authorized to view.
 TODO: More information here about search keys, pagination, and some request / response examples.
 
 
+### Submit (create or update) an Order [POST]
+
+You may create or update orders based on the unique identifiers (crm_id, merchant_id, order_id) of the order. If such a record already exists, it will be updated. Otherwise, a new record will be created.
+
++ Request (application/json)
+    {
+        'crm_id' : 777,
+        'merchant_id' : 8888,
+        'order_id' : 'abcdef54321',
+        'etc': '...'
+    }
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: orders/55555.json
+
+    + Body
+        {
+            'id' : 55555,
+            'etc' : '...'
+        }
+
 ## Group Single Order
 
 View and update single orders
@@ -281,28 +304,6 @@ You may update information about an Order already reported to Chargeback using t
     + Body
         {
             'id' : '12345678',
-            'etc' : '...'
-        }
-### Submit (create or update) an Order [PUT]
-
-You may create or update orders based on the unique identifiers (crm_id, merchant_id, order_id) of the order. If such a record already exists, it will be updated. Otherwise, a new record will be created.
-
-+ Request (application/json)
-    {
-        'crm_id' : 777,
-        'merchant_id' : 8888,
-        'order_id' : 'abcdef54321',
-        'etc': '...'
-    }
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: orders/55555.json
-
-    + Body
-        {
-            'id' : 55555,
             'etc' : '...'
         }
 ## Group Transactions
