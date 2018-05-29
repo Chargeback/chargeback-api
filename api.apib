@@ -125,6 +125,99 @@ Search existing orders that your api user is authorized to view.
         total_records: '1',
         orders: [...]
     }
+### Get an existing Order [GET /orders/(id)]
+
+You may view an existing Order record and its details.
+
++ Response 201 (application/json)
+
+        {
+            'status': 'success',
+            'order': {
+                'id' : '12345678',
+                'order_id' : 'abc123',
+                'customer_email' : 'example@email.com',
+                'ip_address' : '172.98.44.123',
+                'order_ts' : '2017-11-27T23:59:26Z',
+                'created_at' : '2017-11-28T00:01:42Z',
+                'updated_at' : '2017-11-28T00:01:42Z',
+                'order_amount' : '177.16',
+                'customer_first_name' : 'Nate',
+                'customer_last_name' : 'Smith',
+                'billing_first_name' : 'Nate',
+                'billing_last_name' : 'Smith',
+                'billing_address1' : '12345 My Actual House',
+                'billing_city' : 'South Jordan',
+                'billing_state' : 'UT',
+                'billing_country' : 'USA',
+                'billing_postal' : '84009',
+                'authorization_code' : 'xxyyzz',
+                'card_type' : 'Visa',
+                'card_prefix' : '444321',
+                'card_suffix' : '8215',
+                'shipping_subtotal' : '5.00',
+                'tax_subtotal' : '5.00',
+                'manually_generated' : false,
+                'creator_type' : 'ApiUser',
+                'source_url' : 'https://my-magento-site.com/admin-area/order-search.php?order_id=abc123',
+                'customer_phone' : '123-456-7890',
+                'transaction_id' : 'qwertyzzz',
+                'transaction_amount' : '55.00',
+                'cvv_status' : 'M',
+                'currency_code' : 'USA',
+                'card_exp' : '05/21',
+                'reported_avs_status' : 'Y',
+                'avs_status' : 'Y',
+                'tracking_numbers' : '1ZY2F2150255600110',
+                'line_items' : [
+                    {
+                        'product_name' : 'MIRRORLESS MICRO FOUR THIRDS 45-150 MM',
+                        'product_description' : 'PANASONIC LUMIX G VARIO LENS, 45-150MM, F4.0-5.6 ASPH., MIRRORLESS MICRO FOUR THIRDS, MEGA OPTICAL I.S., H-FS45150AK (USA BLACK)',
+                        'product_amount' : '147.99',
+                        'quantity' : 1,
+                        'subtotal' : '147.99',
+                        'source_product_id' : 'prod-123'
+                    },
+                    {
+                        'product_name' : 'Lens Cap',
+                        'product_description' : 'Lens cap with lanyard fits most panasonic lumix cameras',
+                        'product_amount' : '5.99',
+                        'quantity' : 2,
+                        'subtotal' : '11.98',
+                        'source_product_id' : 'prod-777'
+                    }
+                ],
+                'crm' : {
+                    'id': 444,
+                    'name': 'crm_name'
+                },
+                'merchant' : {
+                    'name': 'your_merchant_name'
+                },
+                'shipments' : [
+                    {
+                        'tracking_number' : '1ZY2F2150255600110',
+                        'tracking_summary': null,
+                        'shipper_name' : 'UPS',
+                        'shipped_ts' : null,
+                        'origin_name' : 'Cameras R Us',
+                        'origin_address1' : '555 A Texas Road',
+                        'origin_city' : 'Austin',
+                        'origin_state' : 'TX',
+                        'origin_country' : 'USA',
+                        'origin_zip' : '73301',
+                        'destination_first_name' : 'Nate'
+                        'destination_last_name' : 'Smith',
+                        'destination_address1' : '10235 S. Jordan Gateway',
+                        'destination_address2' : 'Suite 500',
+                        'destination_city' : 'South Jordan',
+                        'destination_state' : 'UT',
+                        'destination_country' : 'USA',
+                        'destination_zip' : '84095',
+                    }
+                ]
+            }
+        }
 
 ### Create a New Order [POST /orders]
 
@@ -274,99 +367,6 @@ You may report a completed Order using this action. It takes a JSON object.
             }
         }
 
-### Show an existing Order [GET /orders/(id)]
-
-You may view an existing Order record and its details.
-
-+ Response 201 (application/json)
-
-        {
-            'status': 'success',
-            'order': {
-                'id' : '12345678',
-                'order_id' : 'abc123',
-                'customer_email' : 'example@email.com',
-                'ip_address' : '172.98.44.123',
-                'order_ts' : '2017-11-27T23:59:26Z',
-                'created_at' : '2017-11-28T00:01:42Z',
-                'updated_at' : '2017-11-28T00:01:42Z',
-                'order_amount' : '177.16',
-                'customer_first_name' : 'Nate',
-                'customer_last_name' : 'Smith',
-                'billing_first_name' : 'Nate',
-                'billing_last_name' : 'Smith',
-                'billing_address1' : '12345 My Actual House',
-                'billing_city' : 'South Jordan',
-                'billing_state' : 'UT',
-                'billing_country' : 'USA',
-                'billing_postal' : '84009',
-                'authorization_code' : 'xxyyzz',
-                'card_type' : 'Visa',
-                'card_prefix' : '444321',
-                'card_suffix' : '8215',
-                'shipping_subtotal' : '5.00',
-                'tax_subtotal' : '5.00',
-                'manually_generated' : false,
-                'creator_type' : 'ApiUser',
-                'source_url' : 'https://my-magento-site.com/admin-area/order-search.php?order_id=abc123',
-                'customer_phone' : '123-456-7890',
-                'transaction_id' : 'qwertyzzz',
-                'transaction_amount' : '55.00',
-                'cvv_status' : 'M',
-                'currency_code' : 'USA',
-                'card_exp' : '05/21',
-                'reported_avs_status' : 'Y',
-                'avs_status' : 'Y',
-                'tracking_numbers' : '1ZY2F2150255600110',
-                'line_items' : [
-                    {
-                        'product_name' : 'MIRRORLESS MICRO FOUR THIRDS 45-150 MM',
-                        'product_description' : 'PANASONIC LUMIX G VARIO LENS, 45-150MM, F4.0-5.6 ASPH., MIRRORLESS MICRO FOUR THIRDS, MEGA OPTICAL I.S., H-FS45150AK (USA BLACK)',
-                        'product_amount' : '147.99',
-                        'quantity' : 1,
-                        'subtotal' : '147.99',
-                        'source_product_id' : 'prod-123'
-                    },
-                    {
-                        'product_name' : 'Lens Cap',
-                        'product_description' : 'Lens cap with lanyard fits most panasonic lumix cameras',
-                        'product_amount' : '5.99',
-                        'quantity' : 2,
-                        'subtotal' : '11.98',
-                        'source_product_id' : 'prod-777'
-                    }
-                ],
-                'crm' : {
-                    'id': 444,
-                    'name': 'crm_name'
-                },
-                'merchant' : {
-                    'name': 'your_merchant_name'
-                },
-                'shipments' : [
-                    {
-                        'tracking_number' : '1ZY2F2150255600110',
-                        'tracking_summary': null,
-                        'shipper_name' : 'UPS',
-                        'shipped_ts' : null,
-                        'origin_name' : 'Cameras R Us',
-                        'origin_address1' : '555 A Texas Road',
-                        'origin_city' : 'Austin',
-                        'origin_state' : 'TX',
-                        'origin_country' : 'USA',
-                        'origin_zip' : '73301',
-                        'destination_first_name' : 'Nate'
-                        'destination_last_name' : 'Smith',
-                        'destination_address1' : '10235 S. Jordan Gateway',
-                        'destination_address2' : 'Suite 500',
-                        'destination_city' : 'South Jordan',
-                        'destination_state' : 'UT',
-                        'destination_country' : 'USA',
-                        'destination_zip' : '84095',
-                    }
-                ]
-            }
-        }
 
 ### Update an existing Order [PUT /orders/(id)]
 
