@@ -20,7 +20,7 @@ Depending on the access controls granted to the key authorizing the request, som
 ## Order Object [/orders.json]
 An Order object represents a single sales order in the ecommerce platform, POS system, or sales platform for the merchant. It has the following attributes:
 ### Attributes
-| Key                        | Type               | Importance  | Purpose                                                                                                                                                               |
+| Key                        | Type               | Importance  | Description                                                                                                                                                               |
 |----------------------------|--------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | order_id                   | string             | REQUIRED    | The merchant system's unique identifier for the order                                                                                                                 |
 | order_ts                   | ISO 8601           | REQUIRED    | The merchant system's "order completed" timestamp                                                                                                                     |
@@ -43,38 +43,8 @@ An Order object represents a single sales order in the ecommerce platform, POS s
 | tax_subtotal               | decimal            |             | The amount charged for tax                                                                                                                                            |
 | source_url                 | string             |             | The url to access this order in the merchant's sales platform.                                                                                                        |
 | tracking_numbers           | comma list         | RECOMMENDED | Comma-separated list of tracking numbers; each will generate new shipment objects.                                                                                    |
-### Line Items
-The line items on the order; the products that were actually sold. line_items should be an array of json objects.
-| Key                        | Type               | Importance  | Purpose                                                                                                                                                               |
-|----------------------------|--------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| product_name               |                    | RECOMMENDED | The name of the product sold, as it stood at the time of the order.                                                                                                   |
-| product_description        |                    | RECOMMENDED | The description of the product, as it stood at the time of the order.                                                                                                 |
-| product_amount             | decimal            | RECOMMENDED | The price of the product at the time of the order.                                                                                                                    |
-| quantity                   | integer            | RECOMMENDED | The number of this line item sold.                                                                                                                                    |
-| subtotal                   | decimal            | RECOMMENDED | Should be equal to quantity * subtotal. Can be computed from these if left blank.                                                                                     |
-| source_product_id          | string             | RECOMMENDED | The unique identifier of the product in the source system's backend database                                                                                          |
-### Shipments
-| Key                        | Type               | Purpose                                         |
-|----------------------------|--------------------|-------------------------------------------------|
-| tracking_number            | string             | Tracking number that identifies this shipment   |
-| shipper_name               | string             | Name of the shipper                             |
-| shipped_ts                 | string             | When the shipment shipped                       |
-| origin_name                | string             |                                                 |
-| origin_address1            | string             |                                                 |
-| origin_address2            | string             |                                                 |
-| origin_city                | string             |                                                 |
-| origin_state               | string             |                                                 |
-| origin_country             | string             |                                                 |
-| origin_zip                 | string             |                                                 |
-| destination_first_name     | string             |                                                 |
-| destination_last_name      | string             |                                                 |
-| destination_address1       | string             |                                                 |
-| destination_address2       | string             |                                                 |
-| destination_city           | string             |                                                 |
-| destination_state          | string             |                                                 |
-| destination_country        | string             |                                                 |
-| destination_zip            | string             |                                                 |
-
+| line_items                 | array              | RECOMMENDED | Line items on the order; see line items section for object details                                                                                                    |
+| shipments                  | array              | RECOMMENDED | Shipping info on the order; see shipments section for object details                                                                                                  |
 ### Customer Profile
 If the customer is a registered user in your system, pass the customer profile information
 | Key                        | Type               | Importance  |
@@ -97,7 +67,7 @@ The billing information captured for this particular transaction
 | billing_postal             | string             | RECOMMENDED |
 ### System Fields
 These fields are either computed, derived, or stored internally by chargeback, but may prove useful to some merchants. If submitted to the api, they will be ignored.
-| Key                        | Type               | Purpose                                                                                                                                                               |
+| Key                        | Type               | Description                                                                                                                                                           |
 |----------------------------|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | id                         | integer            | Chargeback's unique identifier for this order (maybe be used for updates)                                                                                             |
 | avs_status                 | string             | Normalized version of the reported_avs_status, if recognized                                                                                                          |
@@ -107,6 +77,39 @@ These fields are either computed, derived, or stored internally by chargeback, b
 | creator_id                 | integer            | The id of the creator of the record. For API calls, it will be the user record that authorized the call                                                               |
 | creator_type               | string             | The type of creator of the record. For API calls, it will be the string 'User'                                                                                        |
 | manually_generated         | boolean            | This will only be set to true for records created in the web UI                                                                                                       |
+
+### Line Items
+The line items on the order; the products that were actually sold. line_items should be an array of json objects.
+| Key                        | Type               | Importance  | Description                                                                                                                                                           |
+|----------------------------|--------------------|-------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| product_name               |                    | RECOMMENDED | The name of the product sold, as it stood at the time of the order.                                                                                                   |
+| product_description        |                    | RECOMMENDED | The description of the product, as it stood at the time of the order.                                                                                                 |
+| product_amount             | decimal            | RECOMMENDED | The price of the product at the time of the order.                                                                                                                    |
+| quantity                   | integer            | RECOMMENDED | The number of this line item sold.                                                                                                                                    |
+| subtotal                   | decimal            | RECOMMENDED | Should be equal to quantity * subtotal. Can be computed from these if left blank.                                                                                     |
+| source_product_id          | string             | RECOMMENDED | The unique identifier of the product in the source system's backend database                                                                                          |
+### Shipments
+This object is returned as and array of shipping information that was pulled based on the tracking numbers passed in. You can also just pass in shipments.
+| Key                        | Type               | Description                                     |
+|----------------------------|--------------------|-------------------------------------------------|
+| tracking_number            | string             | Tracking number that identifies this shipment   |
+| shipper_name               | string             | Name of the shipper                             |
+| shipped_ts                 | string             | When the shipment shipped                       |
+| origin_name                | string             |                                                 |
+| origin_address1            | string             |                                                 |
+| origin_address2            | string             |                                                 |
+| origin_city                | string             |                                                 |
+| origin_state               | string             |                                                 |
+| origin_country             | string             |                                                 |
+| origin_zip                 | string             |                                                 |
+| destination_first_name     | string             |                                                 |
+| destination_last_name      | string             |                                                 |
+| destination_address1       | string             |                                                 |
+| destination_address2       | string             |                                                 |
+| destination_city           | string             |                                                 |
+| destination_state          | string             |                                                 |
+| destination_country        | string             |                                                 |
+| destination_zip            | string             |                                                 |
 
 ## Search / List Orders [GET /orders]
 
